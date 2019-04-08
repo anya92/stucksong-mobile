@@ -10,13 +10,21 @@ import {
   AsyncStorage,
   Button
 } from "react-native";
+import { connect } from "react-redux";
 import { WebBrowser } from "expo";
+import { fetchUser } from "../state/actions";
 
 import { MonoText } from "../components/StyledText";
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
+  };
+
+  componentDidMount = async () => {
+    const accessToken = await AsyncStorage.getItem("ACCESS_TOKEN");
+
+    this.props.fetchUser(accessToken);
   };
 
   render() {
@@ -38,8 +46,6 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
             <Text style={styles.getStartedText}>Get started by opening</Text>
 
             <View
@@ -69,9 +75,13 @@ export default class HomeScreen extends React.Component {
           <View>
             <Button title="Sign Out" onPress={this._signOutAsync} />
           </View>
+
+          <View>
+            <Text>{JSON.stringify(this.props.user, null, " ")}</Text>
+          </View>
         </ScrollView>
 
-        <View style={styles.tabBarInfoContainer}>
+        {/* <View style={styles.tabBarInfoContainer}>
           <Text style={styles.tabBarInfoText}>
             This is a tab bar. You can edit it in:
           </Text>
@@ -83,32 +93,9 @@ export default class HomeScreen extends React.Component {
               navigation/MainTabNavigator.js
             </MonoText>
           </View>
-        </View>
+        </View> */}
       </View>
     );
-  }
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use
-          useful development tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
   }
 
   _handleLearnMorePress = () => {
@@ -217,3 +204,12 @@ const styles = StyleSheet.create({
     color: "#2e78b7"
   }
 });
+
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(
+  mapStateToProps,
+  { fetchUser }
+)(HomeScreen);

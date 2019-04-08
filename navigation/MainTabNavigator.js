@@ -1,60 +1,102 @@
-import React from 'react';
-import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import React from "react";
+import { Image } from "react-native";
+import {
+  createStackNavigator,
+  createBottomTabNavigator
+} from "react-navigation";
 
-import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import TopTracksScreen from "../screens/TopTracksScreen";
+import TopArtistsScreen from "../screens/TopArtistsScreen";
+import CreatePlaylistScreen from "../screens/CreatePlaylistScreen";
+import UserProfileScreen from "../screens/UserProfileScreen";
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+const TopTracksStack = createStackNavigator({
+  TopTracks: TopTracksScreen
 });
 
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
+TopTracksStack.navigationOptions = {
+  tabBarLabel: "Top Tracks",
+  tabBarOptions: {
+    showLabel: false
+  },
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+    <Image
+      source={
+        focused
+          ? require("../assets/icons/music_note_focused.png")
+          : require("../assets/icons/music_note.png")
       }
+      style={{ width: 26, height: 26, resizeMode: "contain" }}
     />
-  ),
+  )
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const TopArtistsStack = createStackNavigator({
+  TopArtists: TopArtistsScreen
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+TopArtistsStack.navigationOptions = {
+  tabBarLabel: "Top Artists",
+  tabBarOptions: {
+    showLabel: false
+  },
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+    <Image
+      source={
+        focused
+          ? require("../assets/icons/bowie_focused.png")
+          : require("../assets/icons/bowie.png")
+      }
+      style={{ width: 26, height: 26, resizeMode: "contain" }}
     />
-  ),
+  )
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+const CreatePlaylistStack = createStackNavigator({
+  CreatePlaylist: CreatePlaylistScreen
 });
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+CreatePlaylistStack.navigationOptions = {
+  tabBarLabel: "Create Playlist",
+  tabBarOptions: {
+    showLabel: false
+  },
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+    <Image
+      source={
+        focused
+          ? require("../assets/icons/playlist_focused.png")
+          : require("../assets/icons/playlist.png")
+      }
+      style={{ width: 26, height: 26, resizeMode: "contain" }}
     />
-  ),
+  )
+};
+
+const UserProfileStack = createStackNavigator({
+  UserProfile: UserProfileScreen
+});
+
+UserProfileStack.navigationOptions = {
+  tabBarLabel: "UserProfile",
+  tabBarOptions: {
+    showLabel: false
+  },
+  tabBarIcon: ({ focused }) => (
+    <Image
+      source={
+        focused
+          ? require("../assets/icons/settings_focused.png")
+          : require("../assets/icons/settings.png")
+      }
+      style={{ width: 26, height: 26, resizeMode: "contain" }}
+    />
+  )
 };
 
 export default createBottomTabNavigator({
-  HomeStack,
-  LinksStack,
-  SettingsStack,
+  TopTracksStack,
+  TopArtistsStack,
+  CreatePlaylistStack,
+  UserProfileStack
 });
